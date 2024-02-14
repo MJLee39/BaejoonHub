@@ -1,0 +1,73 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Conbaierballet {
+
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		int[] nums = new int[5];
+				
+		for(int i=0; i<5; i++) {
+			nums[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		st = new StringTokenizer(br.readLine());
+		int num = Integer.parseInt(st.nextToken());  //총 상자 개수
+		
+		int[] boxs = new int[num];
+		
+		st = new StringTokenizer(br.readLine());
+		for(int i=0; i<num; i++) {
+			boxs[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		int min = num; 
+		
+		boolean allflag = true;  //다 열어도 만족하지 못하는지 체크
+		
+		for(int i=0; i<boxs.length; i++) {
+			//차례로 거기서부터 시작해서 배열에 담기
+			int ans = 0;
+			int[] numCnt = nums.clone();  //남은거 개수 담은 배열
+			int[] boxNum = new int[num];  //새로운 배열
+			for(int j=0; j<boxs.length; j++) {
+				boxNum[j] = boxs[(j+i)%boxs.length];
+			}
+			
+			for(int z=0; z<boxs.length; z++) {
+				boolean flag = true;  //열어야 하는 거 다 열었는지 체크
+				ans++;  //하나씩 넘어갈 때마다 박스 하나씩 엶
+				if(numCnt[boxNum[z]-1] > 0) {
+					//남은 개수가 0보다 크면 -1
+					numCnt[boxNum[z]-1] = numCnt[boxNum[z]-1]-1;
+				}
+				//매번 다 열었는지 확인
+				int k=4;
+				while(k>=0) {
+					if(numCnt[k] != 0) {
+						flag = false;
+						break;
+					}
+					k--;
+				}
+				if(flag) {
+					allflag = false;
+					min = Math.min(min, ans);
+					break;
+				}
+			}
+		}
+		
+		if(allflag) {
+			min = -1;
+		}
+		System.out.println(min);
+	}
+
+}
