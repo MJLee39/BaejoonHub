@@ -2,24 +2,29 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] citations) {
-        int answer = 0;
-        int min = 0;
+        int n = citations.length;
         int max = 0;
         Arrays.sort(citations);
-        //System.out.println(Arrays.toString(citations));
-        for(int i=0;i<citations.length;i++){
-            if(citations[i]<=citations.length-i){
-                min = citations[i];
-            }else{
-                min = citations.length-i;
-            }
-            if(min > max){
-                max = min;
+        for(int i=n-1; i>=0; i--){
+            if(n-i >= citations[i]){ 
+                max = citations[i];
+                break;
             }
         }
-        
-        //System.out.println("max: "+max);
-        answer = max;
-        return answer;
+        if(n <= citations[0]){
+            if(max < n){
+                max = n;
+            }
+        }else{
+            for(int i=0; i<n; i++){
+                if(n-i <= citations[i]){
+                    if(max < n-i){
+                        max = n-i;
+                    }
+                    break;
+                }
+            }
+        }
+        return max;
     }
 }
